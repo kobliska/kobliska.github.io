@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Exercise Equipment Optimization</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Exercise Equipment Optimization</h1>
+
+<p>This file describes the analysis of data to quantify how well participant do a dumbell exercise.  The data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants is provided and we are expected to determine a machine learning algorithm which assesses how well the excercise is performed.
+The method used is a random forest analysis.  It performs well when there are many predictors and a subset of all predictors is required. Each tree in algorithm uses a subset of the predictors, thereby yielded a preferred subset of predictors.  A training set was provided. It was pruned of NA rows. I first tried a training set with p=.2.  It took roughly 26 minutes on my computer.The results are shown here:</p>
+
+<p>Random Forest</p>
+
+<ul>
+<li>3927 samples</li>
+<li>53 predictors</li>
+<li>5 classes: &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39; </li>
+<li>Resampling: Bootstrapped (25 reps) </li>
+<li>Summary of sample sizes: 3927, 3927, 3927, 3927, 3927, 3927, &hellip; </li>
+<li>Resampling results across tuning parameters:<br/>
+mtry,  Accuracy,  Kappa,  Accuracy SD,  Kappa SD<br/>
+   2,     0.969,     0.96,   0.00576,      0.00727<br/>
+   27,    0.98,      0.975,  0.00535,      0.00677<br/>
+   53,    0.974,     0.966,  0.00823,      0.0104<br/></li>
+<li>Accuracy was used to select the optimal model using  the largest value.</li>
+<li>The final value used for the model was mtry = 27. </li>
+</ul>
+
+<p>Then I tried p=.6 and it took closer to 4 hours to get best fit. Results are here:</p>
+
+<p>Random Forest </p>
+
+<ul>
+<li>11776 samples</li>
+<li>  53 predictors</li>
+<li>   5 classes: &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39; </li>
+<li>Resampling: Bootstrapped (25 reps) </li>
+<li>Summary of sample sizes: 11776, 11776, 11776, 11776, 11776, 11776, &hellip; </li>
+<li>Resampling results across tuning parameters:<br/>
+mtry,  Accuracy,  Kappa,  Accuracy, SD,  Kappa SD<br/>
+ 2,           0.991,          0.988,       0.00228,           0.00288<br/>
+ 27,      0.995,       0.993,    0.0014,         0.00178<br/>
+ 53,      0.993,       0.991,    0.00181,        0.0023<br/></li>
+<li>Accuracy was used to select the optimal model using  the largest value.</li>
+<li>The final value used for the model was mtry = 27. </li>
+</ul>
+
+<p>Accuracy was significantly better(99.5%).  I used this fit to analyze the test data and got 20/20 correct.</p>
+
+<p>With regard to out of sample error, a confusionMatrix analysis was performed on a test data set. The results are shown below.  The accuracy is the same as for the training set!</p>
+
+<p>confusionMatrix(predictions,testingData$classe)</p>
+
+<ul>
+<li><p>Confusion Matrix and Statistics</p></li>
+<li><p>Prediction     ClassA, classB, classC, classD, classE  </p></li>
+<li><pre><code>     A 2232    3    0    0    0  
+</code></pre></li>
+<li><pre><code>     B    0 1513    2    0    2  
+</code></pre></li>
+<li><pre><code>     C    0    1 1366    3    0  
+</code></pre></li>
+<li><pre><code>     D    0    1    0 1283    5  
+</code></pre></li>
+<li><pre><code>     E    0    0    0    0 1435  
+</code></pre></li>
+<li><p>Overall Statistics</p></li>
+<li><pre><code>          Accuracy : 0.9978          
+</code></pre></li>
+<li><pre><code>            95% CI : (0.9965, 0.9987)
+</code></pre></li>
+<li><p>No Information Rate : 0.2845          </p></li>
+<li><p>P-Value [Acc &gt; NIR] : &lt; 2.2e-16       </p></li>
+<li><pre><code>             Kappa : 0.9973          
+</code></pre></li>
+<li><p>Mcnemar&#39;s Test P-Value : NA              </p></li>
+<li><p>Statistics :   Class:A  Class:B  Class:C   Class:D  Class:E</p></li>
+<li><p>Sensitivity            1.0000   0.9967   0.9985   0.9977   0.9951</p></li>
+<li><p>Specificity            0.9995   0.9994   0.9994   0.9991   1.0000</p></li>
+<li><p>Pos Pred Value         0.9987   0.9974   0.9971   0.9953   1.0000</p></li>
+<li><p>Neg Pred Value         1.0000   0.9992   0.9997   0.9995   0.9989</p></li>
+<li><p>Prevalence             0.2845   0.1935   0.1744   0.1639   0.1838</p></li>
+<li><p>Detection Rate         0.2845   0.1928   0.1741   0.1635   0.1829</p></li>
+<li><p>Detection Prevalence   0.2849   0.1933   0.1746   0.1643   0.1829</p></li>
+<li><p>Balanced Accuracy      0.9997   0.9980   0.9990   0.9984   0.9976</p></li>
+</ul>
+
+<p>P-values and error rates are listed in above table.  Needless to say, the fit is very good.</p>
+
+<p>VarImp was run on the fit and the following list shows the most important variables.
+rf variable importance<br/>
+only 20 most important variables shown (out of 53)  </p>
+
+<ul>
+<li>num_window           100.000<br/></li>
+<li>roll_belt             62.113<br/></li>
+<li>pitch_forearm         38.809<br/></li>
+<li>yaw_belt              31.100<br/></li>
+<li>magnet_dumbbell_z     28.194<br/></li>
+<li>pitch_belt            27.901<br/></li>
+<li>magnet_dumbbell_y     27.729<br/></li>
+<li>roll_forearm          21.221<br/></li>
+<li>accel_dumbbell_y      12.809<br/></li>
+<li>magnet_dumbbell_x     11.104<br/></li>
+<li>roll_dumbbell         11.091<br/></li>
+<li>accel_forearm_x       11.073<br/></li>
+<li>accel_belt_z          10.174<br/></li>
+<li>total_accel_dumbbell   8.583<br/></li>
+<li>accel_dumbbell_z       8.348<br/></li>
+<li>magnet_belt_z          7.024<br/></li>
+<li>magnet_forearm_z       6.937<br/></li>
+<li>magnet_belt_y          6.448<br/></li>
+<li>magnet_belt_x          6.018<br/></li>
+<li>roll_arm               5.369<br/></li>
+</ul>
+
+<p>What follows is the code used in this analysis in text format.</p>
+
+<p>setwd(&ldquo;C:/R&rdquo;)<br/>
+library(caret)<br/>
+trainRawData &lt;- read.csv(&ldquo;pml-training.csv&rdquo;,na.strings=c(&ldquo;NA&rdquo;,&ldquo;&rdquo;))<br/>
+NAs &lt;- apply(trainRawData,2,function(x) {sum(is.na(x))})<br/>
+validData &lt;- trainRawData[,which(NAs == 0)]<br/>
+trainIndex &lt;- createDataPartition(y = validData$classe, p=0.6,list=FALSE)<br/>
+trainData &lt;- validData[trainIndex,]<br/>
+removeIndex &lt;- grep(&ldquo;timestamp|X|user_name|new_window&rdquo;,names(trainData))<br/>
+trainData &lt;- trainData[,-removeIndex]<br/>
+modFit2 &lt;- train(trainData$classe ~.,data = trainData,method=&ldquo;rf&rdquo;,prox=TRUE)<br/>
+testingRawData &lt;- read.csv(&ldquo;pml-testing.csv&rdquo;,na.strings=c(&ldquo;NA&rdquo;,&ldquo;&rdquo;))<br/>
+NAs &lt;- apply(testingRawData,2,function(x) {sum(is.na(x))})
+validtestingData &lt;- testingRawData[,which(NAs == 0)]<br/>
+predictions=predict(modFit2,newdata=testingRawData)<br/>
+predictions<br/>
+predictions=predict(modFit2,newdata=validtestingData)<br/>
+predictions  </p>
+
+<p>Overall, the random  Forest algorithm performed very well for this specific set of data.</p>
+
+</body>
+
+</html>
+
